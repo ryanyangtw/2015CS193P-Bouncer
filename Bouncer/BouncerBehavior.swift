@@ -24,9 +24,17 @@ class BouncerBehavior: UIDynamicBehavior {
     
     let lazilyCreatedBlockBehavior = UIDynamicItemBehavior()
     lazilyCreatedBlockBehavior.allowsRotation = true
-    lazilyCreatedBlockBehavior.elasticity = 0.85
+    lazilyCreatedBlockBehavior.elasticity = CGFloat(NSUserDefaults.standardUserDefaults().doubleForKey("BouncerBehavior.Elasticity"))
     lazilyCreatedBlockBehavior.friction = 0
     lazilyCreatedBlockBehavior.resistance = 0
+    
+    // Should remove notification observer some where
+    NSNotificationCenter.defaultCenter().addObserverForName(NSUserDefaultsDidChangeNotification, object: nil, queue: nil) {
+      (notification) -> Void in
+      
+      lazilyCreatedBlockBehavior.elasticity = CGFloat(NSUserDefaults.standardUserDefaults().doubleForKey("BouncerBehavior.Elasticity"))
+    
+    }
     
     return lazilyCreatedBlockBehavior
   }()
